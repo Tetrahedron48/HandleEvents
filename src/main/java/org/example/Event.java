@@ -1,17 +1,20 @@
 package org.example;
 
+
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Event {
     private String eventID;
     private String eventName;
     private String eventVenue;
     private Date eventDate;
-private List<String> eventAttendees=new ArrayList<>();
+private List<Attendees> eventAttendees=new ArrayList<>();
 
     public String getEventID() {
         return eventID;
@@ -45,11 +48,11 @@ private List<String> eventAttendees=new ArrayList<>();
         this.eventDate = eventDate;
     }
 
-    public List<String> getEventAttendees() {
+    public List<Attendees> getEventAttendees() {
         return eventAttendees;
     }
 
-    public void setEventAttendees(List<String> eventAttendees) {
+    public void setEventAttendees(List<Attendees> eventAttendees) {
         this.eventAttendees = eventAttendees;
     }
 
@@ -71,35 +74,52 @@ private List<String> eventAttendees=new ArrayList<>();
                 case 1:
                     System.out.print("Enter Attendee Name to Add: ");
                     String attendeeToAdd = scanner.next();
-                    eventAttendees.add(attendeeToAdd);
+                    System.out.print("Enter the email of attendee: ");
+                    String email = scanner.next();
+                    System.out.print("Enter the phone of attendee: ");
+                    String phone = scanner.next();
+                    System.out.print("Enter the address of attendee: ");
+                    String address = scanner.next();
+                    eventAttendees.add(new Attendees(attendeeToAdd,email,phone,address));
+                    System.out.println("Attendee added successfully.");
                     break;
                 case 2:
                     System.out.print("Enter Attendee Name to Remove: ");
                     String attendeeToRemove = scanner.next();
-                    int k = eventAttendees.indexOf(attendeeToRemove);
-                    if (k != -1) {
-                        eventAttendees.remove(attendeeToRemove);
-                    }else{
+                    if (eventAttendees.removeIf(attendees -> attendees.getName().equals(attendeeToRemove))) {
+                        System.out.println("Attendee removed successfully.");
+                    } else {
                         System.out.println("Attendee not found.");
                     }
                     break;
                 case 3:
                     System.out.print("Enter Attendee Name to Update: ");
                     String attendeeToUpdate = scanner.next();
-                    System.out.print("Enter Updated Name: ");
-                    String updatedName = scanner.next();
-                    int index = eventAttendees.indexOf(attendeeToUpdate);
-                    if (index != -1) {
-                        eventAttendees.set(index, updatedName);
-                        System.out.println("Attendee updated successfully.");
-                    } else {
-                        System.out.println("Attendee not found.");
+                    for (Attendees attendee : eventAttendees) {
+                        if (attendee.getName().equals(attendeeToUpdate)) {
+                            System.out.print("Enter the new name of attendee: ");
+                            String updatedName = scanner.next();
+                            attendee.setName(updatedName);
+                            System.out.print("Enter the new email of attendee: ");
+                            String updatedEmail = scanner.next();
+                            attendee.setEmail(updatedEmail);
+                            System.out.print("Enter the new phone of attendee: ");
+                            String updatedPhone = scanner.next();
+                            attendee.setPhone(updatedPhone);
+                            System.out.print("Enter the new address of attendee: ");
+                            String updatedAddress = scanner.next();
+                            attendee.setAddress(updatedAddress);
+                            System.out.println("Attendee updated successfully.");
+                            break;
+                        }else {
+                            System.out.println("Attendee not found.");
+                        }
                     }
                     break;
                 case 4:
                     System.out.print("Enter Attendee Name to Find: ");
                     String attendeeToFind = scanner.next();
-                    if (eventAttendees.contains(attendeeToFind)) {
+                    if (eventAttendees.stream().anyMatch(attendees -> attendees.getName().equals(attendeeToFind))) {
                         System.out.println(attendeeToFind + " is attending the event.");
                     } else {
                         System.out.println(attendeeToFind + " is not attending the event.");
@@ -119,17 +139,7 @@ private List<String> eventAttendees=new ArrayList<>();
 
 
 
-    @Override
-    public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        String a=sdf.format(eventDate);
-        return
-                "eventID:'" + eventID + '\"' +'\n'+
-                "eventName:'" + eventName + '\"' +'\n'+
-                "eventVenue:'" + eventVenue + '\"' +'\n'+
-                "eventDate:" + a +'\n'+
-                "eventAttendees:" + eventAttendees;
-    }
+
 
     public Event() {
     }

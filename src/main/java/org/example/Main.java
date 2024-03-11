@@ -43,9 +43,26 @@ public class Main {
         for (int i = 0; i < num; i++) {
             System.out.println("Enter the name of attendee " + (i + 1) + ": ");
             String attendee = scanner.nextLine();
-            event.getEventAttendees().add(attendee);
+            System.out.println("Enter the email of attendee " + (i + 1) + ": ");
+            String email = scanner.nextLine();
+            System.out.println("Enter the phone of attendee " + (i + 1) + ": ");
+            String phone = scanner.nextLine();
+            System.out.println("Enter the address of attendee " + (i + 1) + ": ");
+            String address = scanner.nextLine();
+            event.getEventAttendees().add(new Attendees(attendee,email,phone,address));
         }
         event.organizeEvent();
-        System.out.println(event);
+        System.out.println("The details of the event are: ");
+        System.out.println("Event ID: "+event.getEventID());
+        System.out.println("Event Name: "+event.getEventName());
+        System.out.println("Event Venue: "+event.getEventVenue());
+        System.out.println("Event Date: "+event.getEventDate());
+        System.out.println("Event Attendees: ");
+        for (Attendees attendee : event.getEventAttendees()) {
+            System.out.println('\n'+"Name: "+attendee.getName());
+            System.out.println("Email: "+attendee.getEmail());
+            System.out.println("Phone: "+attendee.getPhone());
+            System.out.println("Address: "+attendee.getAddress());
+        }
     }
 }
